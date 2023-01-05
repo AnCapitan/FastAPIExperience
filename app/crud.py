@@ -1,3 +1,5 @@
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
 from . import models, schemas
@@ -14,8 +16,15 @@ def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     db.refresh(db_item)
     return db_item
 
-def get_users(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.User).offset(skip).limit(limit).all()
+
+
+# def get_users(db: Session, skip: int = 0, limit: int = 100):
+#     return db.query(models.UserTest).offset(skip).limit(limit).all()
+
+async def get_users(db: AsyncSession, skip: int = 0, limit: int = 100):
+    result = await db.execute(select(models.UserTest)).offset(skip).limit(limit).all()
+    print(result)
+    return result.scalars().all()
 
 
 def create_user(db: Session, user: schemas.UserCreate):

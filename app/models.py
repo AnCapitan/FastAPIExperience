@@ -1,29 +1,31 @@
-from datetime import datetime
-from typing import Optional
+import sqlalchemy
+from database import metadata
 
-from sqlalchemy import Column, String, Integer, Boolean, ForeignKey
-from sqlalchemy.orm import relationship
+# class User(Base):
+#     items = relationship("Item", back_populates="owner")
+#
+#
+# class Item(Base):
+#     __tablename__ = "items"
+#
+#     id = Column(Integer, primary_key=True, index=True)
+#     title = Column(String, index=True)
+#     description = Column(String, index=True)
+#     owner = relationship("User", back_populates="items")
 
-from database import Base
+user = sqlalchemy.Table(
+    "user",
+    metadata,
+    sqlalchemy.Column("user_id", sqlalchemy.Integer, primary_key=True),
+    sqlalchemy.Column("username", sqlalchemy.String),
+    #sqlalchemy.Column("owner", sqlalchemy.ForeignKey('notes')),
+)
 
-
-class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
-    is_active = Column(Boolean, default=True)
-
-    items = relationship("Item", back_populates="owner")
-
-
-class Item(Base):
-    __tablename__ = "items"
-
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    description = Column(String, index=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
-
-    owner = relationship("User", back_populates="items")
+note = sqlalchemy.Table(
+    "note",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
+    sqlalchemy.Column("text", sqlalchemy.String),
+    sqlalchemy.Column("completed", sqlalchemy.Boolean),
+    sqlalchemy.Column("user_id", sqlalchemy.Integer, sqlalchemy.ForeignKey("user.user_id"), nullable=False)
+)
