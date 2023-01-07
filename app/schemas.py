@@ -1,54 +1,28 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
-class UserIn(BaseModel):
-    username: str
+class User(BaseModel):
+    vk_id: str
+    email: EmailStr
+    avatar: str
 
 
-class UserBase(BaseModel):
-    user_id: int
-    username: str
+class UserCreate(User):
+    token: str
 
 
-class NoteIn(BaseModel):
-    text: str
-    completed: bool
-    user_id: int
+class UserUpdate(User):
+    pass
 
 
-class NoteBase(BaseModel):
+class UserOut(BaseModel):
     id: int
-    text: str
-    completed: bool
-    user_id: int
+    vk_id: int
+    first_name: str
+    last_name: str
+    avatar: str
 
-# class ItemBase(BaseModel):
-#     title: str
-#     description: str | None = None
-#
-#
-# class ItemCreate(ItemBase):
-#     pass
-#
-#
-# class Item(ItemBase):
-#     id: int
-#     owner_id: int
-#
-#     class Config:
-#         orm_mode = True
-#
-#
-# class UserRead(schemas.BaseUser[uuid.UUID]):
-#     items: list[Item] = []
-#
-#     class Config:
-#         orm_mode = True
-#
-#
-# class UserCreate(schemas.BaseUserCreate):
-#     pass
-#
-#
-# class UserUpdate(schemas.BaseUserUpdate):
-#     pass
+
+class Token(BaseModel):
+    id: int
+    token: str

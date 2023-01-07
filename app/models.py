@@ -1,31 +1,31 @@
-import sqlalchemy
-from database import metadata
+import datetime
+import ormar
+from db import database, metadata
 
-# class User(Base):
-#     items = relationship("Item", back_populates="owner")
-#
-#
-# class Item(Base):
-#     __tablename__ = "items"
-#
-#     id = Column(Integer, primary_key=True, index=True)
-#     title = Column(String, index=True)
-#     description = Column(String, index=True)
-#     owner = relationship("User", back_populates="items")
 
-user = sqlalchemy.Table(
-    "user",
-    metadata,
-    sqlalchemy.Column("user_id", sqlalchemy.Integer, primary_key=True),
-    sqlalchemy.Column("username", sqlalchemy.String),
-    #sqlalchemy.Column("owner", sqlalchemy.ForeignKey('notes')),
-)
+class User(ormar.Model):
+    class Meta:
+        tablename = "user"
+        database = database
+        metadata = metadata
 
-note = sqlalchemy.Table(
-    "note",
-    metadata,
-    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
-    sqlalchemy.Column("text", sqlalchemy.String),
-    sqlalchemy.Column("completed", sqlalchemy.Boolean),
-    sqlalchemy.Column("user_id", sqlalchemy.Integer, sqlalchemy.ForeignKey("user.user_id"), nullable=False)
-)
+    id: int = ormar.Integer(primary_key=True, unique=True)
+    vk_id: int = ormar.Integer(unique=True)
+    first_name: str = ormar.String(max_length=50)
+    last_name: str = ormar.String(max_length=50)
+    email: str = ormar.String(index=True, unique=True, nullable=False, max_length=150)
+    phone: str = ormar.String(max_length=11, unique=True, nullable=True)
+    avatar: str = ormar.String(max_length=350, nullable=True)
+
+
+class Item(ormar.Model):
+    class Meta:
+        tablename = "item"
+        database = database
+        metadata = metadata
+
+    id: int = ormar.Integer(primary_key=True)
+    title: str = ormar.String(max_length=100)
+    description = ormar.String(max_length=500)
+    created_at: datetime.datetime = ormar.DateTime(pydantic_only=True, default=datetime.datetime.now)
+    user = ormar.ForeignKey(User)

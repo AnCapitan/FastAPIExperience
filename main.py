@@ -1,28 +1,33 @@
 import uvicorn
 from fastapi import FastAPI
-from starlette.staticfiles import StaticFiles
-from starlette.templating import Jinja2Templates
-
-from app import models
-from database import engine, SessionLocal
-from app.api import *
-
-models.Base.metadata.create_all(bind=engine)
+from app.api import app_router
+from app.auth import auth_router
+from db import database, metadata, engine
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="frontend/static"), name="static")
-templates = Jinja2Templates(directory="frontend/templates")
 
 
-# def get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
+metadata.create_all(engine)
+app.state.database = database
 
 
+@app.on_event("startup")
+async def startup() -> None:
+    database_ = app.state.database
+    if not database_.is_connected:
+        await database_.connect()
+
+
+@app.on_event("shutdown")
+async def shutdown() -> None:
+    database_ = app.state.database
+    if database_.is_connected:
+        await database_.disconnect()
+
+
+app.include_router(auth_router)
 app.include_router(app_router)
+
 if __name__ == '__main__':
-    uvicorn.run("main:app", host="127.0.0.1", log_level="info", reload=True, port=8080)
+    uvicorn.run("main:app", host="localhost", log_level="info", reload=True, port=8080)
