@@ -1,19 +1,28 @@
 from typing import List
 
+from starlette.requests import Request
+from starlette.templating import Jinja2Templates
+
+templates = Jinja2Templates(directory="frontend/templates/app")
 from fastapi import APIRouter, Form
 from .models import Item, User
 from .schemas import ItemIn, GetItem, ItemOut
 
-from starlette.staticfiles import StaticFiles
-from starlette.templating import Jinja2Templates
 
 app_router = APIRouter(tags=["item"])
 user_router = APIRouter(tags=["user"])
 
 
+
+@app_router.get("/")
+async def main_page(request:Request):
+    return templates.TemplateResponse("main_page.html", {"request": request})
+
+
+
 @user_router.get("/user", response_model=List[User])
-async def get_items():
-    users = await Item.objects.all()
+async def get_users():
+    users = await User.objects.all()
     return users
 
 
@@ -32,5 +41,6 @@ async def get_item(item_pk=int):
 @app_router.post("/items", response_model=ItemOut)
 async def create_item(title: str = Form(...), description: str = Form(...)):
     post = ItemIn(title=title, description=description)
-    user = await User.objects.first()
+    user_id = 214366260
+    user = await User.objects.get(id_vk=user_id)
     return await Item.objects.create(user=user, **post.dict())
