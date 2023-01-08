@@ -1,13 +1,19 @@
+from typing import Union, List
+
 from pydantic import BaseModel, EmailStr
 
+
 class User(BaseModel):
-    vk_id: str
+    id_vk: str
     first_name: str
     last_name: str
 
 
-class UserCreate(User):
-    token: str
+class UserCreate(BaseModel):
+    id_vk: int
+    first_name: str
+    last_name: str
+    avatar: str
 
 
 class UserUpdate(User):
@@ -23,17 +29,26 @@ class UserOut(BaseModel):
 
 
 class Token(BaseModel):
-    id: int
-    token: str
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    id_vk: Union[str, None] = None
+    scopes: List[str] = []
+
 
 class ItemIn(BaseModel):
     title: str
     description: str
 
+
 class ItemOut(BaseModel):
     title: str
     description: str
     user: User
+
+
 class GetItem(BaseModel):
     user: User
     title: str

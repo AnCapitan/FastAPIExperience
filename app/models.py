@@ -10,11 +10,9 @@ class User(ormar.Model):
         metadata = metadata
 
     id: int = ormar.Integer(primary_key=True, unique=True)
-    vk_id: int = ormar.Integer(unique=True)
+    id_vk: int = ormar.Integer(unique=True)
     first_name: str = ormar.String(max_length=50)
     last_name: str = ormar.String(max_length=50)
-    email: str = ormar.String(index=True, unique=True, nullable=False, max_length=150)
-    phone: str = ormar.String(max_length=11, unique=True, nullable=True)
     avatar: str = ormar.String(max_length=350, nullable=True)
 
 
