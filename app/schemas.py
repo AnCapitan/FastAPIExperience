@@ -10,7 +10,7 @@ class User(BaseModel):
 
 
 class UserCreate(BaseModel):
-    id_vk: int
+    user_id: int
     first_name: str
     last_name: str
     avatar: str

@@ -20,9 +20,10 @@ async def main_page(request:Request):
 
 
 
-@user_router.get("/user", response_model=List[User])
+@user_router.get("/user")
 async def get_users():
-    users = await User.objects.all()
+    user_id = 214366261
+    users = await User.objects.get(id_vk=user_id)
     return users
 
 
