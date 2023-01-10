@@ -9,22 +9,18 @@ from .models import Item, User
 from .schemas import ItemIn, GetItem, ItemOut
 
 
+
 app_router = APIRouter(tags=["item"])
 user_router = APIRouter(tags=["user"])
 
 
 
+
+
 @app_router.get("/")
-async def main_page(request:Request):
+async def main_page(request: Request):
     return templates.TemplateResponse("main_page.html", {"request": request})
 
-
-
-@user_router.get("/user")
-async def get_users():
-    user_id = 214366261
-    users = await User.objects.get(id_vk=user_id)
-    return users
 
 
 @app_router.get("/items", response_model=List[Item])

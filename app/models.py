@@ -14,6 +14,7 @@ class User(ormar.Model):
     first_name: str = ormar.String(max_length=50)
     last_name: str = ormar.String(max_length=50)
     avatar: str = ormar.String(max_length=350, nullable=True)
+    disabled = ormar.Boolean(default=False, nullable=False)
 
 
 class Item(ormar.Model):

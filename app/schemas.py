@@ -1,6 +1,6 @@
 from typing import Union, List
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 
 class User(BaseModel):
@@ -21,8 +21,7 @@ class UserUpdate(User):
 
 
 class UserOut(BaseModel):
-    id: int
-    vk_id: int
+    user_id: int
     first_name: str
     last_name: str
     avatar: str
