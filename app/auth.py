@@ -1,19 +1,17 @@
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
-import requests as req
 from starlette.requests import Request
+import requests as req
 from fastapi import APIRouter
 from decouple import config
 from .schemas import UserCreate
 from .models import User
-from . import schemas
 
 auth_router = APIRouter(tags=["auth"])
 auth_router.mount("/static", StaticFiles(directory="frontend/static"), name="static")
 templates = Jinja2Templates(directory="frontend/templates/app")
 
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 1440
+
 
 
 @auth_router.get("/verify")

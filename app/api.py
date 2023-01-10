@@ -1,9 +1,6 @@
 from typing import List
-
 from starlette.requests import Request
 from starlette.templating import Jinja2Templates
-
-templates = Jinja2Templates(directory="frontend/templates/app")
 from fastapi import APIRouter, Form
 from .models import Item, User
 from .schemas import ItemIn, GetItem, ItemOut
@@ -13,9 +10,7 @@ from .schemas import ItemIn, GetItem, ItemOut
 app_router = APIRouter(tags=["item"])
 user_router = APIRouter(tags=["user"])
 
-
-
-
+templates = Jinja2Templates(directory="frontend/templates/app")
 
 @app_router.get("/")
 async def main_page(request: Request):
