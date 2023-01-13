@@ -1,6 +1,6 @@
 import datetime
 import ormar
-from db import database, metadata
+from database import database, metadata
 
 
 class User(ormar.Model):

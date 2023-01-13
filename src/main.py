@@ -1,9 +1,9 @@
 import uvicorn
 from fastapi import FastAPI
-from app.api import app_router, user_router
-from app.auth import auth_router
-from db import database, metadata, engine
-from app.jwt import token_router
+from auth.api import app_router, user_router
+from auth.auth import auth_router
+from database import database, metadata, engine
+from auth.jwt import token_router
 
 app = FastAPI()
 
