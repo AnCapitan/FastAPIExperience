@@ -5,9 +5,9 @@ from auth.auth import auth_router
 from database import database, metadata, engine
 from auth.jwt import token_router
 
-app = FastAPI()
-
-
+app = FastAPI(
+    title="FastAPI Treiding"
+)
 
 metadata.create_all(engine)
 app.state.database = database
@@ -31,7 +31,6 @@ app.include_router(auth_router)
 app.include_router(app_router)
 app.include_router(user_router)
 app.include_router(token_router)
-
 
 if __name__ == '__main__':
     uvicorn.run("main:app", host="localhost", log_level="info", reload=True, port=8000)

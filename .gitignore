@@ -1,5 +1,7 @@
 # database
-sqlite.db
+database/
+migrations/versions
+command.txt
 
 # Byte-compiled / optimized / DLL files
 app/__pycache__/
