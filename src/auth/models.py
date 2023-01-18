@@ -1,30 +1,17 @@
-import datetime
-import ormar
-from database import database, metadata
+from sqlalchemy import Table, Column, Integer, String, Boolean, MetaData
+
+from database import Base
 
 
-class User(ormar.Model):
-    class Meta:
-        tablename = "user"
-        database = database
-        metadata = metadata
+class User(Base):
+    __tablename__ = 'User'
 
-    id: int = ormar.Integer(unique=True, primary_key=True)
-    user_id: int = ormar.Integer(unique=True)
-    first_name: str = ormar.String(max_length=50)
-    last_name: str = ormar.String(max_length=50)
-    avatar: str = ormar.String(max_length=350, nullable=True)
-    disabled = ormar.Boolean(default=False, nullable=False)
-
-
-class Item(ormar.Model):
-    class Meta:
-        tablename = "item"
-        database = database
-        metadata = metadata
-
-    id: int = ormar.Integer(primary_key=True)
-    title: str = ormar.String(max_length=100)
-    description = ormar.String(max_length=500)
-    created_at: datetime.datetime = ormar.DateTime(pydantic_only=True, default=datetime.datetime.now)
-    user = ormar.ForeignKey(User)
+    id = Column("id", Integer, primary_key=True)
+    user_id = Column("user_id", Integer)
+    first_name = Column("first_name", String)
+    last_name = Column("last_name", String)
+    avatar = Column('avatar', String)
+    #hashed_password = Column("hashed_password", String, nullable=False)
+    #is_active = Column("is_active", Boolean, default=True, nullable=False)
+    #is_superuser = Column("is_superuser", Boolean, default=False, nullable=False)
+    #is_verified = Column("is_verified", Boolean, default=False, nullable=False)

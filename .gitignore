@@ -1,6 +1,5 @@
 # database
 database/
-migrations/versions
 command.txt
 
 # Byte-compiled / optimized / DLL files

@@ -1,6 +1,5 @@
 from logging.config import fileConfig
 
-import section as section
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
@@ -9,10 +8,17 @@ from alembic import context
 import os
 import sys
 
+
+
 sys.path.append(os.path.join(sys.path[0], 'src'))
 
 from src.config import POSTGRES_PASSWORD, POSTGRES_USER
+#from src.auth.models import metadata as metadata_auth
+#from src.blog.models import metadata as metadata_item
 
+# TYTYSADDDDDDDDDDDDDDDDDDDDDDDDDDDDDdd
+from database import Base
+import src.models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -21,7 +27,6 @@ config = context.config
 section = config.config_ini_section
 config.set_section_option(section, "POSTGRES_USER", POSTGRES_USER)
 config.set_section_option(section, "POSTGRES_PASSWORD", POSTGRES_PASSWORD)
-
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
@@ -31,7 +36,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
